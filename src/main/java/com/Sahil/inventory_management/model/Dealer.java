@@ -18,7 +18,8 @@ public class Dealer {
     //-------------- Constructors ---------------
 
 
-    public Dealer() {}
+    public Dealer() {
+    }
 
     public Dealer(User user) {
         this.user = user;

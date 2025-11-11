@@ -90,7 +90,7 @@ public class ProductController {
             @PathVariable Long id,
             @RequestParam Integer quantityChange
     ) {
-       Product newQuantity = productService.updateStockQuantity(id, quantityChange);
+        Product newQuantity = productService.updateStockQuantity(id, quantityChange);
         return ResponseEntity.ok(BaseResponseDTO.success("Stock quantity updated successfully", newQuantity));
     }
 

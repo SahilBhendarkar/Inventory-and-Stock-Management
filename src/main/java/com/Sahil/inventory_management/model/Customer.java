@@ -17,7 +17,8 @@ public class Customer {
     //-------------- Constructors ---------------
 
 
-    public Customer() {}
+    public Customer() {
+    }
 
     public Customer(User user) {
         this.user = user;

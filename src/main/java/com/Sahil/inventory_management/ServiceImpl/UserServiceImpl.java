@@ -1,14 +1,18 @@
 package com.Sahil.inventory_management.ServiceImpl;
 
+import com.Sahil.inventory_management.DTO.LoginRequest;
+import com.Sahil.inventory_management.DTO.LoginResponse;
 import com.Sahil.inventory_management.DTO.RegisterRequest;
 import com.Sahil.inventory_management.Repository.AdminRepository;
 import com.Sahil.inventory_management.Repository.CustomerRepository;
-import com.Sahil.inventory_management.DTO.LoginRequest;
-import com.Sahil.inventory_management.DTO.LoginResponse;
-import com.Sahil.inventory_management.Repository.*;
+import com.Sahil.inventory_management.Repository.DealerRepository;
+import com.Sahil.inventory_management.Repository.UserRepository;
 import com.Sahil.inventory_management.Service.IUserService;
 import com.Sahil.inventory_management.Util.JwtUtil;
-import com.Sahil.inventory_management.model.*;
+import com.Sahil.inventory_management.model.Admin;
+import com.Sahil.inventory_management.model.Customer;
+import com.Sahil.inventory_management.model.Dealer;
+import com.Sahil.inventory_management.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,7 @@
 package com.Sahil.inventory_management.ServiceImpl;
 
 import com.Sahil.inventory_management.DTO.ProductDTO;
+import com.Sahil.inventory_management.Exception.AccessDeniedException;
 import com.Sahil.inventory_management.Exception.InvalidInputException;
 import com.Sahil.inventory_management.Exception.ResourceNotFoundException;
 import com.Sahil.inventory_management.Mapper.Mapper;
@@ -32,9 +33,16 @@ public class ProductServiceImpl implements IProductService {
     // ---------------- Add Product ----------------
     @Override
     public ProductDTO addProduct(ProductDTO productDTO) {
+
         if (productDTO.getName() == null || productDTO.getPrice() == null) {
             throw new InvalidInputException("Product name and price are required.");
         }
+
+        String userRole = getLoggedInUserRole();
+        if (!"ADMIN".equalsIgnoreCase(userRole)) {
+            throw new AccessDeniedException("Only Admins can add new products.");
+        }
+
 
         Product product = Mapper.toProduct(productDTO);
         product.setCreatedAt(LocalDateTime.now());
@@ -110,11 +118,14 @@ public class ProductServiceImpl implements IProductService {
     // ---------------- Delete Product ----------------
     @Override
     public void deleteProduct(Long id) {
+        String userRole = getLoggedInUserRole();
+        if (!"ADMIN".equalsIgnoreCase(userRole)) {
+            throw new AccessDeniedException("Only Admin can delete products.");
+        }
         Product product = productRespository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
         productRespository.delete(product);
     }
-
 
 
     // ---------------- Update Stock & Save Transaction Log ----------------
@@ -142,7 +153,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     private Long getLoggedInUserId() {
-        return 1L; // Temporary fixed ID
+        return 1L; // It is used as a Temporary fixed ID
     }
 
 
@@ -154,10 +165,19 @@ public class ProductServiceImpl implements IProductService {
                 .map(Mapper::toProductDTO)
                 .collect(Collectors.toList());
 
+
+        String userRole = getLoggedInUserRole();
+        if (!"ADMIN".equalsIgnoreCase(userRole)) {
+            throw new AccessDeniedException("Only Admin can view low stock reports.");
+        }
         if (lowStockProducts.isEmpty()) {
             throw new ResourceNotFoundException("No products found below minimum stock level");
         }
 
         return lowStockProducts;
+    }
+
+    private String getLoggedInUserRole() {
+        return "Admin";
     }
 }

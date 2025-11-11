@@ -16,6 +16,7 @@ public interface IProductService {
 
     ProductDTO updateProduct(Long id, ProductDTO productDTO);
 
+    // ---------------- Delete Product ----------------
     void deleteProduct(Long id);
 
     // ---------------- Stock Management ----------------

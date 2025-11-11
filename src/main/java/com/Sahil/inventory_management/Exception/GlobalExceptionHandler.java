@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponseDTO<?>> handleResourceNotFound(ResourceNotFoundException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
                 "ERROR",
-                ex.getMessage(),
+                "Resource not Found Exception : " + ex.getMessage(),
                 null,
                 LocalDateTime.now()
         );
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponseDTO<?>> handleInvalidInput(InvalidInputException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
                 "ERROR",
-                ex.getMessage(),
+                "Invalid Input Exception :  " + ex.getMessage(),
                 null,
                 LocalDateTime.now()
         );
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponseDTO<?>> handleAuthenticationFailure(AuthenticationFailureException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
                 "ERROR",
-                ex.getMessage(),
+                "Authentication Failure Exception : " + ex.getMessage(),
                 null,
                 LocalDateTime.now()
         );
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponseDTO<?>> handleAccessDenied(AccessDeniedException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
                 "ERROR",
-                "Access Denied: " + ex.getMessage(),
+                "Access Denied Exception :" +ex.getMessage(),
                 null,
                 LocalDateTime.now()
         );
