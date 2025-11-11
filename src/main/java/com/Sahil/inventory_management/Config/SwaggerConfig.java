@@ -19,7 +19,7 @@ public class SwaggerConfig {
                         .description("Backend API documentation for Inventory Management System.")
                         .contact(new Contact()
                                 .name("Sahil Bhendarkar")
-                                .email("sahil@gmail.com")
+                                .email("sahilbhendarkar19@gmail.com")
                                 .url("https://github.com/SahilBhendarkar"))
                         .license(new License()
                                 .name("Apache 2.0")

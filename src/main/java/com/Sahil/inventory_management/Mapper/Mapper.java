@@ -14,7 +14,7 @@ public class Mapper {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPassword(),     // INCLUDED
+                user.getPassword(),
                 user.getRole(),
                 user.getMobileNo(),
                 user.getAddress(),
@@ -31,7 +31,7 @@ public class Mapper {
         user.setId(dto.getId());
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());  // INCLUDED
+        user.setPassword(dto.getPassword());
         user.setRole(dto.getRole());
         user.setMobileNo(dto.getMobileNo());
         user.setAddress(dto.getAddress());

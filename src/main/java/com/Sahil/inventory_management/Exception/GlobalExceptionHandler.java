@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ✅ Resource Not Found
+    //  Resource Not Found
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<BaseResponseDTO<?>> handleResourceNotFound(ResourceNotFoundException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    // ✅ Invalid Input
+    //  Invalid Input
     @ExceptionHandler(InvalidInputException.class)
     public ResponseEntity<BaseResponseDTO<?>> handleInvalidInput(InvalidInputException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // ✅ Authentication Failure
+    //  Authentication Failure
     @ExceptionHandler(AuthenticationFailureException.class)
     public ResponseEntity<BaseResponseDTO<?>> handleAuthenticationFailure(AuthenticationFailureException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
-    // ✅ Access Denied (Spring Security)
+    //  Access Denied (Spring Security)
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<BaseResponseDTO<?>> handleAccessDenied(AccessDeniedException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
-    // ✅ Generic fallback for all unhandled exceptions
+    //  Generic fallback for all unhandled exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseResponseDTO<?>> handleGeneralException(Exception ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
