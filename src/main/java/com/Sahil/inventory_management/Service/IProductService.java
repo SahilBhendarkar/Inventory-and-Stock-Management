@@ -1,6 +1,7 @@
 package com.Sahil.inventory_management.Service;
 
 import com.Sahil.inventory_management.DTO.ProductDTO;
+import com.Sahil.inventory_management.model.Product;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface IProductService {
     void deleteProduct(Long id);
 
     // ---------------- Stock Management ----------------
-    void updateStockQuantity(Long id, Integer quantityChange);
+    Product updateStockQuantity(Long id, Integer quantityChange);
 
     // ---------------- Low Stock Reports ----------------
     List<ProductDTO> getLowStockProducts();

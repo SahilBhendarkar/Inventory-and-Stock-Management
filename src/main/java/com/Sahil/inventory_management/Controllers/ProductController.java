@@ -3,6 +3,7 @@ package com.Sahil.inventory_management.Controllers;
 import com.Sahil.inventory_management.DTO.BaseResponseDTO;
 import com.Sahil.inventory_management.DTO.ProductDTO;
 import com.Sahil.inventory_management.Service.IProductService;
+import com.Sahil.inventory_management.model.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -85,12 +86,12 @@ public class ProductController {
     //  Update stock — Dealer
     @PreAuthorize("hasRole('DEALER')")
     @PatchMapping("/{id}/stock")
-    public ResponseEntity<BaseResponseDTO<String>> updateStockQuantity(
+    public ResponseEntity<BaseResponseDTO<Product>> updateStockQuantity(
             @PathVariable Long id,
             @RequestParam Integer quantityChange
     ) {
-        productService.updateStockQuantity(id, quantityChange);
-        return ResponseEntity.ok(BaseResponseDTO.success("Stock quantity updated successfully", null));
+       Product newQuantity = productService.updateStockQuantity(id, quantityChange);
+        return ResponseEntity.ok(BaseResponseDTO.success("Stock quantity updated successfully", newQuantity));
     }
 
 

@@ -119,7 +119,7 @@ public class ProductServiceImpl implements IProductService {
 
     // ---------------- Update Stock & Save Transaction Log ----------------
     @Override
-    public void updateStockQuantity(Long productId, Integer quantityChange) {
+    public Product updateStockQuantity(Long productId, Integer quantityChange) {
         Product product = productRespository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + productId));
 
@@ -137,6 +137,8 @@ public class ProductServiceImpl implements IProductService {
         Long userId = getLoggedInUserId();
         TransactionLog log = new TransactionLog(productId, userId, changeType, quantityChange, LocalDateTime.now());
         transactionLogRepository.save(log);
+
+        return product;
     }
 
     private Long getLoggedInUserId() {
