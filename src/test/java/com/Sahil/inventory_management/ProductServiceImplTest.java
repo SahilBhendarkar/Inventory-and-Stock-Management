@@ -31,7 +31,7 @@ public class ProductServiceImplTest {
     private TransactionLogRepository transactionLogRepository;
 
     @Mock
-    private UserRepository userRepository;   // 🔥 Added missing mock
+    private UserRepository userRepository;  // ✅ Required for getLoggedInUserId()
 
     @InjectMocks
     private ProductServiceImpl productService;
@@ -42,19 +42,27 @@ public class ProductServiceImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Fake authentication user 🔥
+        // -------------------------
+        // 🔥 Mock Security Context
+        // -------------------------
         TestingAuthenticationToken auth =
                 new TestingAuthenticationToken("testuser@gmail.com", null);
+
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        // Fake DB user for email 🔥
+        // -------------------------
+        // 🔥 Mock userRepository
+        // -------------------------
         User mockUser = new User();
         mockUser.setId(99L);
         mockUser.setEmail("testuser@gmail.com");
+
         when(userRepository.findByEmail("testuser@gmail.com"))
                 .thenReturn(Optional.of(mockUser));
 
+        // -------------------------
         // Sample Product
+        // -------------------------
         sampleProduct = new Product();
         sampleProduct.setId(1L);
         sampleProduct.setName("Test Product");
@@ -80,7 +88,9 @@ public class ProductServiceImplTest {
     void testGetProductById_NotFound() {
         when(productRespository.findById(2L)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> productService.getProductById(2L));
+        assertThrows(ResourceNotFoundException.class,
+                () -> productService.getProductById(2L));
+
         verify(productRespository, times(1)).findById(2L);
     }
 
@@ -91,7 +101,7 @@ public class ProductServiceImplTest {
 
         productService.updateStockQuantity(1L, 5);
 
-        assertEquals(15, sampleProduct.getQuantity());
+        assertEquals(15, sampleProduct.getQuantity());  // 10 + 5
         verify(transactionLogRepository, times(1)).save(any());
     }
 
@@ -102,7 +112,7 @@ public class ProductServiceImplTest {
 
         productService.updateStockQuantity(1L, -5);
 
-        assertEquals(5, sampleProduct.getQuantity());
+        assertEquals(5, sampleProduct.getQuantity());   // 10 - 5
         verify(transactionLogRepository, times(1)).save(any());
     }
 
@@ -110,6 +120,9 @@ public class ProductServiceImplTest {
     void testUpdateStockQuantity_NegativeStock() {
         when(productRespository.findById(1L)).thenReturn(Optional.of(sampleProduct));
 
-        assertThrows(RuntimeException.class, () -> productService.updateStockQuantity(1L, -20));
+        assertThrows(RuntimeException.class,
+                () -> productService.updateStockQuantity(1L, -20)); // 10 - 20 = negative
+
+        verify(transactionLogRepository, never()).save(any());
     }
 }
