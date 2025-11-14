@@ -7,12 +7,15 @@ import com.Sahil.inventory_management.Exception.ResourceNotFoundException;
 import com.Sahil.inventory_management.Mapper.Mapper;
 import com.Sahil.inventory_management.Repository.ProductRespository;
 import com.Sahil.inventory_management.Repository.TransactionLogRepository;
+import com.Sahil.inventory_management.Repository.UserRepository;
 import com.Sahil.inventory_management.Service.IProductService;
 import com.Sahil.inventory_management.model.Product;
 import com.Sahil.inventory_management.model.TransactionLog;
+import com.Sahil.inventory_management.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,6 +28,9 @@ public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private ProductRespository productRespository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private TransactionLogRepository transactionLogRepository;
@@ -106,6 +112,7 @@ public class ProductServiceImpl implements IProductService {
 
         if (productDTO.getName() != null) product.setName(productDTO.getName());
         if (productDTO.getDescription() != null) product.setDescription(productDTO.getDescription());
+        if(productDTO.getBrand() !=null) product.setBrand((productDTO.getBrand()));
         if (productDTO.getPrice() != null) product.setPrice(productDTO.getPrice());
         if (productDTO.getCategory() != null) product.setCategory(productDTO.getCategory());
 
@@ -153,7 +160,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     private Long getLoggedInUserId() {
-        return 1L; // It is used as a Temporary fixed ID
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + username));
+
+        return user.getId();
     }
 
 

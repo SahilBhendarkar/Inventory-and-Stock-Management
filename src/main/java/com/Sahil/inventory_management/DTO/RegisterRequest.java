@@ -8,7 +8,7 @@ public class RegisterRequest {
     private String password;
     private String mobileNo;
     private String address;
-    private String role;        // Can Be "Customer", "Admin", "Dealer"
+    private String role;        // Role Can Be "Customer", "Admin", "Dealer"
 
 
     // ---------------- Constructors ----------------

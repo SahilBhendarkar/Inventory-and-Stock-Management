@@ -4,13 +4,17 @@ import com.Sahil.inventory_management.DTO.ProductDTO;
 import com.Sahil.inventory_management.Exception.ResourceNotFoundException;
 import com.Sahil.inventory_management.Repository.ProductRespository;
 import com.Sahil.inventory_management.Repository.TransactionLogRepository;
+import com.Sahil.inventory_management.Repository.UserRepository;
 import com.Sahil.inventory_management.ServiceImpl.ProductServiceImpl;
 import com.Sahil.inventory_management.model.Product;
+import com.Sahil.inventory_management.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -18,15 +22,16 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
 public class ProductServiceImplTest {
-
 
     @Mock
     private ProductRespository productRespository;
 
     @Mock
     private TransactionLogRepository transactionLogRepository;
+
+    @Mock
+    private UserRepository userRepository;   // 🔥 Added missing mock
 
     @InjectMocks
     private ProductServiceImpl productService;
@@ -37,6 +42,19 @@ public class ProductServiceImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        // Fake authentication user 🔥
+        TestingAuthenticationToken auth =
+                new TestingAuthenticationToken("testuser@gmail.com", null);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        // Fake DB user for email 🔥
+        User mockUser = new User();
+        mockUser.setId(99L);
+        mockUser.setEmail("testuser@gmail.com");
+        when(userRepository.findByEmail("testuser@gmail.com"))
+                .thenReturn(Optional.of(mockUser));
+
+        // Sample Product
         sampleProduct = new Product();
         sampleProduct.setId(1L);
         sampleProduct.setName("Test Product");
@@ -95,6 +113,3 @@ public class ProductServiceImplTest {
         assertThrows(RuntimeException.class, () -> productService.updateStockQuantity(1L, -20));
     }
 }
-
-
-

@@ -44,7 +44,6 @@ public class UserServiceImpl implements IUserService {
 
         String role = request.getRole().toUpperCase();
 
-
         if (!role.equals("CUSTOMER") && !role.equals("ADMIN") && !role.equals("DEALER")) {
             return ResponseEntity.badRequest()
                     .body("Invalid role. Must be CUSTOMER, ADMIN, or DEALER.");

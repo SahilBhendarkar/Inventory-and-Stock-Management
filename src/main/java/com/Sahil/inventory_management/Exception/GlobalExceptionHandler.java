@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponseDTO<?>> handleAccessDenied(AccessDeniedException ex) {
         BaseResponseDTO<?> response = new BaseResponseDTO<>(
                 "ERROR",
-                "Access Denied Exception :" +ex.getMessage(),
+                "Access Denied Exception :" + ex.getMessage(),
                 null,
                 LocalDateTime.now()
         );

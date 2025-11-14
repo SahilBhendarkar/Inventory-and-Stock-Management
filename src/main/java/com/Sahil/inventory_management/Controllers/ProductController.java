@@ -30,7 +30,7 @@ public class ProductController {
     }
 
 
-    //  View product by ID — All roles
+    //  Get product by ID — All roles
     @PreAuthorize("hasAnyRole('ADMIN', 'DEALER', 'CUSTOMER')")
     @GetMapping("/{id}")
     public ResponseEntity<BaseResponseDTO<ProductDTO>> getProductById(@PathVariable Long id) {
