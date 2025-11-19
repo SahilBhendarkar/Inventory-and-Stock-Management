@@ -18,10 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -33,6 +31,19 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+
+        // THIS IS THE FINAL FIX — BYPASS JWT FOR LOGIN, REGISTER, AND OPTIONS
+        if (path.equals("/api/users/login") ||
+                path.equals("/api/users/register") ||
+                path.startsWith("/v3/api-docs") ||
+                path.startsWith("/swagger-ui") ||
+                request.getMethod().equals("OPTIONS")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
         String token = null;
