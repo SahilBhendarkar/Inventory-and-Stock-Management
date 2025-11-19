@@ -4,15 +4,13 @@ import com.Sahil.inventory_management.Repository.TransactionLogRepository;
 import com.Sahil.inventory_management.model.TransactionLog;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/transactions")
+@CrossOrigin(origins = "*")
 public class TransactionLogController {
 
     private final TransactionLogRepository transactionLogRepository;
