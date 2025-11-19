@@ -16,10 +16,11 @@ public class JwtUtil {
 
     private final long EXPIRATION_TIME = 86400000L; // 24 hours
 
-    public String generateToken(String email, String role) {
+    public String generateToken(String email,String name, String role) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", "ROLE_" + role.toUpperCase())
+                .setSubject(name)
+                .claim("role", role.toUpperCase())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)  // HS512 key + HS512 algorithm
