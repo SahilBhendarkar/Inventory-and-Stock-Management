@@ -1,4 +1,3 @@
-// src/main/java/com/Sahil/inventory_management/Config/SecurityConfig.java
 
 package com.Sahil.inventory_management.Config;
 
