@@ -88,7 +88,7 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findByEmail(request.getEmail())
                 .map(user -> {
                     if (user.getPassword().equals(request.getPassword())) { // Plain password check
-                        String token = jwtUtil.generateToken(user.getEmail(),user.getName(), user.getRole());
+                        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
                         return ResponseEntity.ok(new LoginResponse(token, user.getRole()));
                     } else {
                         return ResponseEntity.status(401).body("Invalid password");
