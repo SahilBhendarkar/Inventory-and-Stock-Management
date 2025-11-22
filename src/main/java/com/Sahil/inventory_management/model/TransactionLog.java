@@ -15,7 +15,6 @@ public class TransactionLog {
 
     private Long productId;
     private Long userId; // user who made the change
-    private String changeType; // e.g., "INCREASE", "DECREASE"
     private Integer quantityChanged;
     private LocalDateTime createdAt;
 
@@ -23,10 +22,9 @@ public class TransactionLog {
     public TransactionLog() {
     }
 
-    public TransactionLog(Long productId, Long userId, String changeType, Integer quantityChanged, LocalDateTime createdAt) {
+    public TransactionLog(Long productId, Long userId, Integer quantityChanged, LocalDateTime createdAt) {
         this.productId = productId;
         this.userId = userId;
-        this.changeType = changeType;
         this.quantityChanged = quantityChanged;
         this.createdAt = createdAt;
     }
@@ -53,14 +51,6 @@ public class TransactionLog {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getChangeType() {
-        return changeType;
-    }
-
-    public void setChangeType(String changeType) {
-        this.changeType = changeType;
     }
 
     public Integer getQuantityChanged() {

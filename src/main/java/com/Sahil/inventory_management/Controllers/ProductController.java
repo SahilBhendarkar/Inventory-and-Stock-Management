@@ -2,6 +2,7 @@ package com.Sahil.inventory_management.Controllers;
 
 import com.Sahil.inventory_management.DTO.BaseResponseDTO;
 import com.Sahil.inventory_management.DTO.ProductDTO;
+import com.Sahil.inventory_management.DTO.StockDTO;
 import com.Sahil.inventory_management.Service.IProductService;
 import com.Sahil.inventory_management.model.Product;
 import org.springframework.http.ResponseEntity;
@@ -89,11 +90,13 @@ public class ProductController {
     @PatchMapping("/{id}/stock")
     public ResponseEntity<BaseResponseDTO<Product>> updateStockQuantity(
             @PathVariable Long id,
-            @RequestParam Integer quantityChange
+            @RequestBody StockDTO stockDTO
     ) {
-        Product newQuantity = productService.updateStockQuantity(id, quantityChange);
-        return ResponseEntity.ok(BaseResponseDTO.success("Stock quantity updated successfully", newQuantity));
+        System.out.println("HELLO WORLD");
+        Product updatedProduct = productService.updateStockQuantity(id, stockDTO.getQuantity());
+        return ResponseEntity.ok(BaseResponseDTO.success("Stock quantity updated successfully", updatedProduct));
     }
+
 
 
     //  View low-stock products — Admin

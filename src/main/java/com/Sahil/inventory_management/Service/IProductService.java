@@ -20,7 +20,7 @@ public interface IProductService {
     void deleteProduct(Long id);
 
     // ---------------- Stock Management ----------------
-    Product updateStockQuantity(Long id, Integer quantityChange);
+    Product updateStockQuantity(Long id, Integer quantity);
 
     // ---------------- Low Stock Reports ----------------
     List<ProductDTO> getLowStockProducts();

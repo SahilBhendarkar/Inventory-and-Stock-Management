@@ -137,27 +137,33 @@ public class ProductServiceImpl implements IProductService {
 
     // ---------------- Update Stock & Save Transaction Log ----------------
     @Override
-    public Product updateStockQuantity(Long productId, Integer quantityChange) {
+    public Product updateStockQuantity(Long productId, Integer quantity) {
         Product product = productRespository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + productId));
 
-        int newQuantity = product.getQuantity() + quantityChange;
-        if (newQuantity < 0) {
+        // Validate non-negative stock
+        if (quantity < 0) {
             throw new InvalidInputException("Stock cannot be negative.");
         }
 
-        product.setQuantity(newQuantity);
+        // Directly set the new stock (NO addition)
+        product.setQuantity(quantity);
         product.setUpdatedAt(LocalDateTime.now());
         productRespository.save(product);
 
         // Save transaction log
-        String changeType = quantityChange > 0 ? "INCREASE" : "DECREASE";
         Long userId = getLoggedInUserId();
-        TransactionLog log = new TransactionLog(productId, userId, changeType, quantityChange, LocalDateTime.now());
+        TransactionLog log = new TransactionLog(
+                productId,
+                userId,
+                quantity,
+                LocalDateTime.now()
+        );
         transactionLogRepository.save(log);
 
         return product;
     }
+
 
     private Long getLoggedInUserId() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
