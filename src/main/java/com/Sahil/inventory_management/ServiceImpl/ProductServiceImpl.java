@@ -79,7 +79,7 @@ public class ProductServiceImpl implements IProductService {
         if (category == null && brand == null && minPrice == null && maxPrice == null) {
             products = productRespository.findAll(pageable).getContent();
         } else {
-            // Apply filters manually (you can later replace this with a @Query-based method for performance)
+            // Apply filters manually
             products = productRespository.findAll(pageable)
                     .getContent()
                     .stream()

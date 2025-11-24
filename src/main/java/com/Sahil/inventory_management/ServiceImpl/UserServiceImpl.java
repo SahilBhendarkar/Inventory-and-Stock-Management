@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -97,4 +98,14 @@ public class UserServiceImpl implements IUserService {
                 })
                 .orElse(ResponseEntity.status(401).body("User not found"));
     }
+
+
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+
+
 }

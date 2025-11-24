@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/all").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // This is CRUCIAL for CORS preflight
 
                         // EVERYTHING ELSE PROTECTED
