@@ -167,11 +167,13 @@ public class ProductServiceImpl implements IProductService {
 
 
     private Long getLoggedInUserId() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + username));
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return user.getId();
+        if (principal instanceof User user) {
+            return user.getId();
+        } else {
+            throw new RuntimeException("Logged in principal is not a User instance!");
+        }
     }
 
 
