@@ -11,14 +11,16 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // FIXED: HS512 key (512+ bits)
+    //  HS512 key (512+ bits)
     private final SecretKey key = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS512);
 
     private final long EXPIRATION_TIME = 86400000L; // 24 hours
 
-    public String generateToken(String email, String role) {
+    public String generateToken(String email,Long id,String name,String role) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("id", id)
+                .claim("name", name)
                 .claim("role", "ROLE_" + role.toUpperCase())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -28,6 +30,14 @@ public class JwtUtil {
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Long extractId(String token) {
+        return extractClaim(token, claims -> claims.get("id", Long.class));
+    }
+
+    public String extractName(String token) {
+        return extractClaim(token, claims -> claims.get("name", String.class));
     }
 
     public String extractRole(String token) {
@@ -49,6 +59,14 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
         return resolver.apply(claims);
+    }
+
+    public Claims getAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public boolean validateToken(String token, String email) {

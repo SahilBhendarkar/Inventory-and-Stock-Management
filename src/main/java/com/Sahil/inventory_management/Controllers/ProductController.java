@@ -2,11 +2,15 @@ package com.Sahil.inventory_management.Controllers;
 
 import com.Sahil.inventory_management.DTO.BaseResponseDTO;
 import com.Sahil.inventory_management.DTO.ProductDTO;
+import com.Sahil.inventory_management.DTO.ProductPageResponse;
 import com.Sahil.inventory_management.DTO.StockDTO;
 import com.Sahil.inventory_management.Service.IProductService;
 import com.Sahil.inventory_management.model.Product;
+import com.Sahil.inventory_management.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,16 +48,25 @@ public class ProductController {
     //  Get All Product + Filter + Pagination
     @PreAuthorize("hasAnyRole('ADMIN', 'DEALER', 'CUSTOMER')")
     @GetMapping
-    public ResponseEntity<BaseResponseDTO<List<ProductDTO>>> getProducts(
+    public ResponseEntity<BaseResponseDTO<ProductPageResponse>> getProducts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "5") int size,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice
     ) {
-        List<ProductDTO> products = productService.getProducts(page, size, category, brand, minPrice, maxPrice);
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) auth.getPrincipal();
+
+        Long userId = currentUser.getId();
+        String name = currentUser.getName();
+        String role = currentUser.getRole().toString();
+        String email = currentUser.getEmail();
+
+        List<ProductDTO> products = productService.getProducts(page, size, category, brand, minPrice, maxPrice);
+        Long totalCount = productService.gettotalcount();
         String message;
         if (category == null && brand == null && minPrice == null && maxPrice == null) {
             message = "All products fetched successfully";
@@ -61,8 +74,12 @@ public class ProductController {
             message = "Filtered products fetched successfully";
         }
 
-        return ResponseEntity.ok(BaseResponseDTO.success(message, products));
+        ProductPageResponse data = new ProductPageResponse(products, totalCount);
+
+        return ResponseEntity.ok(BaseResponseDTO.success(message, data));
+
     }
+
 
 
     //  Update product — Only Admin
@@ -106,4 +123,8 @@ public class ProductController {
         List<ProductDTO> lowStockProducts = productService.getLowStockProducts();
         return ResponseEntity.ok(BaseResponseDTO.success("Low stock products fetched successfully", lowStockProducts));
     }
+
+
+
+
 }

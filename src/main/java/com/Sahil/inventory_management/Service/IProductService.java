@@ -25,6 +25,9 @@ public interface IProductService {
     // ---------------- Low Stock Reports ----------------
     List<ProductDTO> getLowStockProducts();
 
+     Long gettotalcount();
+
+//    List<Product> findByCreatedBy(Long createdBy);
 
 }
 

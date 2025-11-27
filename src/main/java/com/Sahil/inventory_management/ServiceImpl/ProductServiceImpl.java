@@ -93,6 +93,7 @@ public class ProductServiceImpl implements IProductService {
         if (products.isEmpty()) {
             throw new ResourceNotFoundException("No products found with the given criteria");
         }
+        Long totalcount = productRespository.count();
 
         return products.stream()
                 .map(Mapper::toProductDTO)
@@ -192,6 +193,12 @@ public class ProductServiceImpl implements IProductService {
         }
 
         return lowStockProducts;
+    }
+
+    @Override
+    public Long gettotalcount() {
+        Long totalcount = productRespository.count();
+        return totalcount;
     }
 
     private String getLoggedInUserRole() {

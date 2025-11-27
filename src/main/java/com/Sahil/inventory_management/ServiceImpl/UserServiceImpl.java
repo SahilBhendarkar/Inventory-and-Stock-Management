@@ -8,6 +8,7 @@ import com.Sahil.inventory_management.Repository.AdminRepository;
 import com.Sahil.inventory_management.Repository.CustomerRepository;
 import com.Sahil.inventory_management.Repository.DealerRepository;
 import com.Sahil.inventory_management.Repository.UserRepository;
+import com.Sahil.inventory_management.Service.DealerUserProjection;
 import com.Sahil.inventory_management.Service.IUserService;
 import com.Sahil.inventory_management.Util.JwtUtil;
 import com.Sahil.inventory_management.model.Admin;
@@ -90,7 +91,7 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findByEmail(request.getEmail())
                 .map(user -> {
                     if (user.getPassword().equals(request.getPassword())) { // Plain password check
-                        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+                        String token = jwtUtil.generateToken(user.getEmail(), user.getId(), user.getName(), user.getRole());
                         return ResponseEntity.ok(new LoginResponse(token, user.getRole()));
                     } else {
                         return ResponseEntity.status(401).body("Invalid password");
@@ -106,6 +107,11 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findAll();
     }
 
+
+    @Override
+    public List<DealerUserProjection> getAllDealers() {
+        return dealerRepository.getAllDealerUsers();
+    }
 
 
 }

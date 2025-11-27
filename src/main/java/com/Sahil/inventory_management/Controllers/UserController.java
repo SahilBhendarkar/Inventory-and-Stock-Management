@@ -3,6 +3,7 @@ package com.Sahil.inventory_management.Controllers;
 
 import com.Sahil.inventory_management.DTO.LoginRequest;
 import com.Sahil.inventory_management.DTO.RegisterRequest;
+import com.Sahil.inventory_management.Service.DealerUserProjection;
 import com.Sahil.inventory_management.Service.IUserService;
 import com.Sahil.inventory_management.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,17 @@ public class UserController {
     }
 
 
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getDealers")
+    public ResponseEntity<List<DealerUserProjection>> getAllDealers() {
+        return ResponseEntity.ok(userService.getAllDealers());
+    }
 
 }
